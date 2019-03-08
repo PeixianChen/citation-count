@@ -14,3 +14,8 @@ EXCLUSIVE_AUTHORS = [
     'Name B'
 ]
 
+# 待检测文章列表
+ARTICLES = [
+    ('TITLE A', 'AUTHOR AA, AUTHOR AB, ...'),
+    ('TITLE B', 'AUTHOR BA, AUTHOR BB, ...'),
+]
