@@ -4,7 +4,7 @@
 ## Usage
 ```sh
 cd citation-count
-pip install requirements.txt
+pip install -r requirements.txt
 cp settings.sample.py settings.py
 python cc.py
 ```
