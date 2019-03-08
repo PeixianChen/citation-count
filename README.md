@@ -2,6 +2,8 @@
 基于 Google Scholar 的论文他引次数统计。
 
 ## Usage
+> 需要安装 **ChromeDriver** 并添加至环境变量。
+
 ```sh
 cd citation-count
 pip install -r requirements.txt
