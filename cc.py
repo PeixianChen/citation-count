@@ -1,7 +1,7 @@
 from colorama import Style, Fore
 
 from core import GoogleScholar
-from settings import ARTICLES
+from settings import ARTICLES, EXPORT
 from utils import is_journal, is_others, highlight
 
 
@@ -33,6 +33,7 @@ def cc(title: str, authors: str):
                     Style.BRIGHT, '[%02d] %s\n' % (i + 1, cite.title),
                     Style.NORMAL, '     %s\n' % cite.url,
                     Style.NORMAL, '     %s\n' % cite.authors,
+                    Style.NORMAL + Fore.YELLOW + '     %s\n' % cite.citations.get(EXPORT, 'Not Found.'),
                     Style.BRIGHT + Fore.MAGENTA + '     Good.\n' if valid else '',
                 ]
                 print(''.join(message))

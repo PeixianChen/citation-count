@@ -14,6 +14,9 @@ EXCLUSIVE_AUTHORS = [
     'Name B'
 ]
 
+# 导出引用格式
+EXPORT = 'APA'
+
 # 待检测文章列表
 ARTICLES = [
     ('TITLE A', 'AUTHOR AA, AUTHOR AB, ...'),

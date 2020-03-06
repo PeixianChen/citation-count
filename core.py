@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-from utils import wait_captcha, Article
+from utils import wait_captcha, wait_element, Article
 
 
 class GoogleScholar(webdriver.Chrome):
@@ -65,32 +65,32 @@ class GoogleScholar(webdriver.Chrome):
                 authors = 'Not Available'
 
             # 引用源
-            # 打开该文章引用源
-            # WebDriverWait(self,30).until(EC.presence_of_element_located((By.XPATH,'./div/a[@class="gs_or_cit gs_nph"]')))
-            btn_citation = div_article.find_element_by_xpath('./div/a[@class="gs_or_cit gs_nph"]')    
-            btn_citation.click()
-            import time; time.sleep(2)  # 这里要等引用的表格出来才能继续
-            # 检索引用源
-            WebDriverWait(self,30).until(EC.presence_of_element_located((By.XPATH,'//div[@id="gs_citt"]')))
-            tab_sources = self.find_element_by_xpath('//div[@id="gs_citt"]')
-            sources = tab_sources.text.split('\n')
+            try:
+                citations = self.extract_citations(div_article)
+            except:
+                citations = dict()
 
-            # 在这里要把引用的表格关掉才能继续
-            WebDriverWait(self,30).until(EC.presence_of_element_located((By.XPATH,'//a[@id="gs_cit-x"]')))
-            btn_close_citation = self.find_element_by_xpath('//a[@id="gs_cit-x"]')
-            btn_close_citation.click()
-
-            # import time; time.sleep(4)  
-
-            # 处理引用源
-            citation = dict()
-            for i in range(0, len(sources), 2):
-                citation[sources[i]] = sources[i + 1]
-            # print(citation['APA'])
-
-            articles.append(Article(title, url, citation['APA']))
+            articles.append(Article(title, url, authors, citations))
 
         return articles
+
+    def extract_citations(self, div_article) -> dict:
+        """提取某文章的引用格式
+        """
+        # 打开引用表格
+        btn_citation = div_article.find_element_by_xpath('./div/a[@class="gs_or_cit gs_nph"]')
+        btn_citation.click()
+
+        # 检索引用表格
+        tab_citation = wait_element(self, '//div[@id="gs_citt"]')
+        citations = tab_citation.text.split('\n')
+        citations = dict(zip(citations[0::1], citations[1::1]))
+
+        # 关闭引用表格
+        btn_close = wait_element(self, '//a[@id="gs_cit-x"]')
+        btn_close.click()
+
+        return citations
 
     @wait_captcha
     def goto_next_page(self) -> bool:

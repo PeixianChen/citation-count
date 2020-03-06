@@ -2,12 +2,15 @@ from collections import namedtuple
 from functools import wraps
 
 from colorama import Fore
-from selenium.webdriver.support.expected_conditions import url_matches
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import url_matches, visibility_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
+
+
 
 from settings import JOURNAL_WHITELIST, JOURNAL_BLACKLIST, EXCLUSIVE_AUTHORS
 
-Article = namedtuple('Article', 'title url authors')
+Article = namedtuple('Article', 'title url authors citations')
 
 
 def wait_captcha(func):
@@ -22,6 +25,15 @@ def wait_captcha(func):
         return res
 
     return wrapped_func
+
+
+def wait_element(driver, xpath, timeout=60):
+    """等待某个元素加载
+    """
+    locator = (By.XPATH, xpath)
+    condition = visibility_of_element_located(locator)
+    element = WebDriverWait(driver, 60).until(condition)
+    return element
 
 
 def is_journal(article: Article):
