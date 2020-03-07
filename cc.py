@@ -24,7 +24,8 @@ def cc(title: str, authors: str):
 
             articles = gs.extract_articles_of_current_page()
             for i, cite in enumerate(articles):
-                valid = is_journal(cite)[0] and is_others(cite, authors)[0]
+                # valid = is_journal(cite)[0] and is_others(cite, authors)[0]
+                valid = is_others(cite, authors)[0]
                 cite = highlight(cite, authors)
                 total += valid
 
@@ -38,10 +39,10 @@ def cc(title: str, authors: str):
                 ]
                 print(''.join(message))
 
-            arg = input('Valid citations %d, press ENTER or input NEW count: ' % total)
-            if arg.isdigit():
-                total = int(arg)
-                print('Update citations: %d' % total)
+            # arg = input('Valid citations %d, press ENTER or input NEW count: ' % total)
+            # if arg.isdigit():
+            #     total = int(arg)
+            #     print('Update citations: %d' % total)
 
             if not gs.goto_next_page():
                 break
