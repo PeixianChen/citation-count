@@ -1,5 +1,6 @@
 # citation-count
 基于 Google Scholar 的论文他引次数统计。
+无法绕开人机检测，外挂有风险，使用需慎重。
 
 ## Usage
 > 需要安装 **ChromeDriver** 并添加至环境变量。
