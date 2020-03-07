@@ -64,9 +64,10 @@ if __name__ == '__main__':
         print('-' * 100)
 
         # 自行设定文件生成目录
-        os.makedirs("./" + title)
-        f = open("./" + title + "/" + title + ".txt", "a")
-        print(type(f))
+        t = title
+        if 't' in t: t = t.replace(':', '') 
+        os.makedirs("./" + t)
+        f = open("./" + t + "/" + t + ".txt", "a")
         total = cc(title, authors, f)
         f.close()
 
