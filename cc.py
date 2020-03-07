@@ -3,9 +3,10 @@ from colorama import Style, Fore
 from core import GoogleScholar
 from settings import ARTICLES, EXPORT
 from utils import is_journal, is_others, highlight
+import os
 
 
-def cc(title: str, authors: str):
+def cc(title: str, authors: str, file):
     with GoogleScholar() as gs:
         # 前往文章搜索页面
         gs.search(title)
@@ -13,8 +14,8 @@ def cc(title: str, authors: str):
             print(Fore.YELLOW + 'No citations found.')
             exit(0)
 
-        # 遍历每一页
-        page, total = 0, 0
+        # 遍历每一页, total:他引数目, totalnum:全部文章
+        page, total, totalnum = 0, 0, 0
         while True:
 
             page += 1
@@ -28,6 +29,7 @@ def cc(title: str, authors: str):
                 valid = is_others(cite, authors)[0]
                 cite = highlight(cite, authors)
                 total += valid
+                totalnum += 1
 
                 message = [
                     Fore.BLUE,
@@ -38,12 +40,16 @@ def cc(title: str, authors: str):
                     Style.BRIGHT + Fore.MAGENTA + '     Good.\n' if valid else '',
                 ]
                 print(''.join(message))
+                f.write("引用论文" + str(totalnum) + "\n")
+                f.write(cite.citations.get(EXPORT, 'Not Found.') + "\n")
+                f.write("引用出处【-】" + "\n")
+                f.write("\n")
+                f.write("\n")
 
             # arg = input('Valid citations %d, press ENTER or input NEW count: ' % total)
             # if arg.isdigit():
             #     total = int(arg)
             #     print('Update citations: %d' % total)
-
             if not gs.goto_next_page():
                 break
 
@@ -57,6 +63,11 @@ if __name__ == '__main__':
         print(Style.NORMAL + Fore.GREEN + authors)
         print('-' * 100)
 
-        total = cc(title, authors)
+        # 自行设定文件生成目录
+        os.makedirs("./" + title)
+        f = open("./" + title + "/" + title + ".txt", "a")
+        print(type(f))
+        total = cc(title, authors, f)
+        f.close()
 
         print('Total count: ' + Style.BRIGHT + Fore.GREEN + '%d' % total)
