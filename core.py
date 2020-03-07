@@ -67,6 +67,8 @@ class GoogleScholar(webdriver.Chrome):
             # 引用源
             try:
                 citations = self.extract_citations(div_article)
+                import time
+                time.sleep(3)
             except:
                 citations = dict()
 
