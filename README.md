@@ -18,3 +18,4 @@ python cc.py
 * `EXPORT` 导出引用格式，如 `APA` 等。
 * `ARTICLES` 待处理的文章列表
 * 自行确认并修改 `utils.py` 中的判定逻辑 `is_journal` 和 `is_others`。
+* 最终会在目录下生成文章同名的txt, 存储所有APA引用内容，可以直接复制到word生成表格
